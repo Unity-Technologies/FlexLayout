@@ -25,6 +25,8 @@ export const Splitter = (props: ISplitterProps) => {
     const parentNode = node.getParent() as RowNode | BorderNode;
 
     const onMouseDown = (event: Event | React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
+        if (node._hasFixedChildren)
+            return;
         DragDrop.instance.setGlassCursorOverride(node.getOrientation() === Orientation.HORZ ? "ns-resize" : "ew-resize");
         DragDrop.instance.startDrag(event, onDragStart, onDragMove, onDragEnd, onDragCancel, undefined, undefined, layout.getCurrentDocument(), layout.getRootDiv());
         pBounds.current = parentNode._getSplitterBounds(node, true);
@@ -117,9 +119,10 @@ export const Splitter = (props: ISplitterProps) => {
     const cm = layout.getClassName;
     let r = node.getRect();
     const style = r.styleWithPosition({
-        cursor: node.getOrientation() === Orientation.HORZ ? "ns-resize" : "ew-resize",
+        cursor: node._hasFixedChildren ? "default" : (node.getOrientation() === Orientation.HORZ ? "ns-resize" : "ew-resize"),
     });
-    let className = cm(CLASSES.FLEXLAYOUT__SPLITTER) + " " + cm(CLASSES.FLEXLAYOUT__SPLITTER_ + node.getOrientation().getName());
+    const splitterClassName = node._hasFixedChildren ? CLASSES.FLEXLAYOUT__FIXED_SPLITTER : CLASSES.FLEXLAYOUT__SPLITTER;
+    let className = cm(splitterClassName) + " " + cm(CLASSES.FLEXLAYOUT__SPLITTER_ + node.getOrientation().getName());
 
     if (parentNode instanceof BorderNode) {
         className += " " + cm(CLASSES.FLEXLAYOUT__SPLITTER_BORDER);
@@ -150,7 +153,7 @@ export const Splitter = (props: ISplitterProps) => {
             r2.height += extra;
         }
         const style2 = r2.styleWithPosition({
-            cursor: node.getOrientation() === Orientation.HORZ ? "ns-resize" : "ew-resize"
+            cursor: node._hasFixedChildren ? "default" : (node.getOrientation() === Orientation.HORZ ? "ns-resize" : "ew-resize")
         });
 
         const className2 = cm(CLASSES.FLEXLAYOUT__SPLITTER_EXTRA);

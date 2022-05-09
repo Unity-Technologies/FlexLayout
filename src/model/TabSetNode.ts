@@ -57,6 +57,7 @@ export class TabSetNode extends Node implements IDraggable, IDropTarget {
         attributeDefinitions.add("selected", 0).setType(Attribute.NUMBER);
         attributeDefinitions.add("name", undefined).setType(Attribute.STRING);
         attributeDefinitions.add("config", undefined).setType("any");
+        attributeDefinitions.add("fixed", false).setType(Attribute.BOOLEAN);
 
         attributeDefinitions.addInherited("enableDeleteWhenEmpty", "tabSetEnableDeleteWhenEmpty");
         attributeDefinitions.addInherited("enableDrop", "tabSetEnableDrop");
@@ -263,6 +264,10 @@ export class TabSetNode extends Node implements IDraggable, IDropTarget {
     /** @internal */
     _setSelected(index: number) {
         this._attributes.selected = index;
+    }
+    
+    _isFixed(): boolean {
+        return this._getAttr("fixed") as boolean | false;
     }
 
     /** @internal */

@@ -6,6 +6,8 @@ import { Node } from "./Node";
 export class SplitterNode extends Node {
     static readonly TYPE: string = "splitter";
 
+    _hasFixedChildren:boolean = false;
+    
     /** @internal */
     constructor(model: Model) {
         super(model);
@@ -72,6 +74,10 @@ export class SplitterNode extends Node {
         return new AttributeDefinitions();
     }
 
+    _setHasFixedChildren(hasFixedChildren:boolean): void {
+        this._hasFixedChildren = hasFixedChildren;
+    }
+    
     toJson(): undefined {
         return undefined;
     }

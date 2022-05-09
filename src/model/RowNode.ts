@@ -272,11 +272,13 @@ export class RowNode extends Node implements IDropTarget {
         if (this._dirty) {
             this._drawChildren = [];
 
+            const hasFixedChildren = this._children.some(x => x._isFixed());
             for (let i = 0; i < this._children.length; i++) {
                 const child = this._children[i] as RowNode | TabSetNode;
                 if (i !== 0) {
                     const newSplitter = new SplitterNode(this._model);
                     newSplitter._setParent(this);
+                    newSplitter._setHasFixedChildren(hasFixedChildren);
                     this._drawChildren.push(newSplitter);
                 }
                 this._drawChildren.push(child);

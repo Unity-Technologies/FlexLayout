@@ -11,6 +11,7 @@ import { useTabOverflow } from "./TabOverflowHook";
 import { Orientation } from "../Orientation";
 import { CLASSES } from "../Types";
 import { isAuxMouseEvent } from "./Utils";
+import { ITabSetRenderValues} from "./Layout";
 
 /** @internal */
 export interface IBorderTabSetProps {
@@ -116,7 +117,7 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
 
     // allow customization of tabset right/bottom buttons
     let buttons: any[] = [];
-    const renderState = { headerContent: undefined, buttons, stickyButtons: [], headerButtons: [] };
+    const renderState:ITabSetRenderValues = { headerContent: undefined, buttons, stickyButtons: [], headerButtons: [] };
     layout.customizeTabSet(border, renderState);
     buttons = renderState.buttons;
 
